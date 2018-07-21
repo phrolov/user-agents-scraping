@@ -9,11 +9,17 @@ from useragents.items import UserAgentItemLoader
 class WhatismybrowserSpider(CrawlSpider):
     name = 'whatismybrowser'
     allowed_domains = ['developers.whatismybrowser.com']
-    start_urls = ['https://developers.whatismybrowser.com/useragents/explore/software_name/']
 
-    rules = (
-        Rule(LinkExtractor(allow=r'/software_name/', deny=r'order_by='), callback='parse_item', follow=True),
-    )
+    def __init__(self, category='software_name', *args, **kwargs):
+        self.start_urls = [
+            'https://developers.whatismybrowser.com/useragents/explore/%s/' % category
+        ]
+        self.rules = (
+            Rule(LinkExtractor(allow=r'/%s/' % category, deny=r'order_by='),
+                 callback='parse_item', follow=True),
+        )
+        super(WhatismybrowserSpider, self).__init__(*args, **kwargs)
+        
 
     def parse_item(self, response):
         for selector in response.css('.content-base section .corset table tbody tr'):
