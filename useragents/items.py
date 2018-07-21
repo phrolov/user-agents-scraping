@@ -21,4 +21,3 @@ class UserAgentItem(Item):
 class UserAgentItemLoader(ItemLoader):
     default_item_class       = UserAgentItem
     default_output_processor = TakeFirst()
-    default_input_processor  = MapCompose(str.strip)
